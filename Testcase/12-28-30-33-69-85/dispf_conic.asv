@@ -1,0 +1,197 @@
+% SOCP for AC power flow calculation
+% Test case: 12, 28, 30, 33, 69, 85 distribution power system
+% Each time the program runs, select the code corresponding to the related case
+% and comment out the code corresponding to other cases.
+
+clc;
+clear;
+%% 12 bus
+% Sn=100;
+% Un=11;
+% numbus=12;
+% n=numbus;
+% 
+% branch=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\12\branch-12');
+% branch(:,4:5)=branch(:,4:5)./(Un^2/Sn);
+% numbranch=size(branch,1);
+% 
+% Load=[[1:n]',zeros(n,1),zeros(n,1)];
+% dL=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\12\load-12');
+% for kk = 1:size(dL)
+%     index = find(Load(:,1)==dL(kk,1));
+%     Load(index,2)=dL(kk,2);
+%     Load(index,3)=dL(kk,3);
+% end
+% 
+% Load=Load/(Sn*1000);
+% Pit=-Load(:,2);
+% Qit=-Load(:,3);
+% 
+% node_u=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\12\vol-12');
+
+%% 28 bus
+% Sn=100;
+% Un=11;
+% numbus=28;
+% n=numbus;
+% branch=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\28\branch');
+% branch( :,4)=branch(:,4) ;
+% branch(:,4:5)=branch(:,4:5)./(Un^2/Sn);
+% numbranch=size(branch,1);
+% 
+% Load=[[1:n]',zeros(n,1)];
+% dL=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\28\load');
+% for kk = 1:size(dL)
+%    index = find(Load(:,1)==dL(kk,1));
+%    Load(index,2)=dL(kk,2);
+% end
+% 
+% node_u=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\28\vol');
+% 
+% Pit=-Load(:,2)/(Sn*1000);
+% Qit=Pit.*tan(acos(0.7));
+%% 30 bus
+% numbus=30;
+% n=numbus;
+% branch=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\30\branch');
+% numbranch=size(branch,1);
+% 
+% Load=[[1:n]',zeros(n,1)];
+% dL=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\30\load');
+% for kk = 1:size(dL)
+%    index = find(Load(:,1)==dL(kk,1));
+%    Load(index,2)=dL(kk,2);
+%    Load(index,3)=dL(kk,3);
+% end
+% Pit=-Load(:,2);
+% Qit=-Load(:,3);
+%% 33 bus
+% Sn=100;
+% Un=12.66;
+% numbus=33;
+% n=numbus;
+% % 支路编号|送端|接收端|电阻（欧姆）|电抗（欧姆）
+% branch=xlsread('E:\Coding_Matlab\Codes_Phd\Exactness_SOCP\33\branch');
+% branch(:,4:5)=branch(:,4:5)./(Un^2/Sn);
+% 
+% numbranch=size(branch,1);
+% 
+% % 节点|节点注入功率
+% Load=[[1:n]',zeros(n,1),zeros(n,1)];
+% dL=xlsread('E:\Coding_Matlab\Codes_Phd\Exactness_SOCP\33\load');
+% for kk = 1:size(dL)
+%    index = find(Load(:,1)==dL(kk,1));
+%    Load(index,2)=dL(kk,2);
+%    Load(index,3)=dL(kk,3);
+% end
+% Load(:,2:3)=Load(:,2:3)/(Sn*1000);
+% Pit=-Load(:,2);
+% Qit=-Load(:,3);
+
+%% 66 bus
+% Sn=100;
+% Un=12.66;
+% numbus=69;
+% n=numbus;
+% branch=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\69\branch');
+% branch( :,4)=branch(:,4);
+% branch(:,4:5)=branch(:,4:5)./(Un^2/Sn);
+% numbranch=size(branch,1);
+% 
+% Load=[[1:n]',zeros(n,1),zeros(n,1)];
+% dL=xlsread('E:\Coding_Matlab\Codes_Phd\Testcase\12-28-30-33-69-85\69\load');
+% for kk = 1:size(dL)
+%    index = find(Load(:,1)==dL(kk,1));
+%    Load(index,2)=dL(kk,2);
+%    Load(index,3)=dL(kk,3);
+% end
+% 
+% Pit = -Load(:,2)/(Sn*1000);
+% Qit = -Load(:,3)/(Sn*1000);
+
+%% 85 bus
+
+Sn=100;
+Un=11;
+numbus=85;
+n=numbus;
+branch=xlsread('E:\Coding_Matlab\Codes_Phd\Exactness\85\branch-85');
+branch( :,4)=branch(:,4);
+branch(:,4:5)=branch(:,4:5)./(Un^2/Sn);
+numbranch=size(branch,1);
+
+Load=[[1:n]',zeros(n,1)];
+dL=xlsread('E:\Coding_Matlab\Codes_Phd\Exactness\85\load-85');
+for kk = 1:size(dL)
+   index = find(Load(:,1)==dL(kk,1));
+   Load(index,2)=dL(kk,2);
+end
+Pit = -Load(:,2)/(Sn*1000);
+Qit = Pit*tan(acos(0.7));
+
+node_u=xlsread('E:\Coding_Matlab\Codes_Phd\Exactness\85\vol-85');
+
+%% SOCP for AC power flow calculation
+
+Y=zeros(numbus);
+for t=1:size(branch,1)
+    snode=branch(t,2);
+    rnode=branch(t,3);
+    z=(branch(t,4)+i*branch(t,5)) ;
+    y=1/z;
+    Y(snode,rnode)=-y;
+    Y(rnode,snode)=-y;
+end
+for t=1:numbus
+    sbranch=find(branch(:,2)==t);
+    if sbranch(:)~=0
+        for j1=1:size(sbranch,1)
+            Y(t,t)=Y(t,t)+1/ (branch(sbranch(j1,1),4)+i*branch(sbranch(j1,1),5)) ;
+        end
+        %      A(t,sbranch)= 1;
+    end
+    rbranch=find(branch(:,3)==t);
+    if rbranch(:)~=0
+        for j2=1:size(rbranch,1)
+            Y(t,t)=Y(t,t)+1/ (branch(rbranch(j2,1),4)+i*branch(rbranch(j2,1),5)) ;
+        end
+        %      A(t,rbranch)=-1;
+    end
+end
+G=real(Y);B= imag(Y);
+
+H1=zeros(2*numbus,2*numbranch+numbus);
+
+for j=1:numbus
+    H1(j,j)= G(j,j);
+    H1(numbus+j,j)=-B(j,j);
+end
+
+A=zeros(numbranch,numbus);
+for j=1:numbranch
+    I = branch(j, 2) ;
+    J = branch(j, 3) ;
+
+    A(j,I)=1;
+    A(j,J)=-1;
+
+    H1(I,numbus+j)=G(I,J);
+    H1(I,numbus+numbranch+j)=B(I,J);
+    H1(J,numbus+j)=G(J,I);
+    H1(J,numbus+numbranch+j)=-B(J,I);
+
+    H1(numbus+I,numbus+j)=-B(I,J);
+    H1(numbus+I,numbus+numbranch+j)= G(I,J);
+    H1(numbus+J,numbus+j)=-B(J,I);
+    H1(numbus+J,numbus+numbranch+j)=-G(J,I);
+
+end
+
+H1([1,numbus+1],:)=[];
+H1(:,1)=[];
+
+% AC power flow calculation based on MOSEK
+[v_true,R_t,X_t,node_del,err_relax1]=socppf(numbus,numbranch,branch,H1,A,Pit,Qit);
+ave_err_relax1= sum (err_relax1)/size(err_relax1,1);
+
+v_err=abs([1;v_true]-node_u(:,2));
